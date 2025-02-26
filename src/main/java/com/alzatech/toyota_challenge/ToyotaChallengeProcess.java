@@ -33,8 +33,9 @@ public class ToyotaChallengeProcess {
 
     private Dataset<?> latest() {
         return titleRatings
+                .withWatermark("tdate", "10 seconds")
                 .filter(col("numVotes").geq(500))
-                .groupBy(date_trunc("day", col("tdate")), col("tconst"))
+                .groupBy(window(col("tdate"), "1 day"), col("tconst"))
                 .agg(last("tdate").alias("tdate"),
                         last("numVotes").alias("numVotes"));
     }
@@ -56,9 +57,8 @@ public class ToyotaChallengeProcess {
                 .filter(col("numVotes").geq(500))
                 .withWatermark("tdate", "10 seconds")
                 .withColumn("tdate_partition", date_trunc("day", col("tdate")))
-                // .join(latestAgg(), col("tdate_partition").equalTo(col("window_start")), "left")
-                // .withColumn("rank", RANK)
-                ;
+                .join(latestAgg(), col("tdate_partition").equalTo(col("window_start")), "left")
+                .withColumn("rank", RANK);
 
         try {
             query = result.writeStream()
