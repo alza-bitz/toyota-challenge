@@ -9,7 +9,7 @@ different titles of the 10 movies.
 
 For each problem:
 
-1. Understand the problem
+1. Understand the language and the problem
 2. Understand the data model and how it maps to the problem (or vice versa): what parts do I need
 3. Solve the problem first in Spark SQL non-streaming, using PySpark & Jupyter notebook for quick cycles
 4. Then adapt to Spark dataframes api non-streaming
@@ -30,14 +30,18 @@ Ideally steps 3-4 should take into account
 
 # Problem 1.
 
-### 
-Language
+## Language
 "movies"
 "votes"
 "ranking"
 "rating"
 
-### What are the entities?
+## Questions
+1. For 'averageNumberOfVotes' is average of all rows ok, or must it be average of rows with >= 500 votes. (I am assuming average of rows with >= 500 votes)
+2. For 'top 10 movies' is id enough or must it be title name? (I am assuming id is enough because the title is only mentioned in the second problem "list the
+different titles")
+
+## Data Model
 The data looks like an export of normalized tables
 https://zindilis.com/posts/imdb-non-commercial-datasets-schema
 
@@ -48,7 +52,7 @@ ok.
 tconst is an ID for a title, and
 nconst is an ID for a name.
 
-### Thoughts
+## Thoughts
 
 In a streaming solution, there are events. What are the events in this case?
 
